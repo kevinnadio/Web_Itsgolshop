@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Katalog Lengkap | ITSGOLSHOP</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+    <style>
+      /* CSS Tambahan Khusus Grid Katalog */
+      .catalog-page-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 24px;
+        margin-top: 40px;
+      }
+      .catalog-item-card {
+        background: white;
+        padding: 12px;
+        border-radius: 24px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.04);
+        transition: 0.3s;
+        border: 1px solid rgba(255, 255, 255, 0.5);
+      }
+      .catalog-item-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(37, 211, 102, 0.15);
+      }
+      .catalog-item-card img {
+        height: 300px;
+        object-fit: cover;
+        border-radius: 18px;
+      }
+      .catalog-info {
+        padding: 12px 6px 4px;
+        text-align: center;
+      }
+      .catalog-info h4 {
+        font-size: 15px;
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 4px;
+      }
+      .back-to-home {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: #25d366;
+        font-weight: 600;
+        margin-bottom: 20px;
+      }
+
+      /* =========================================
+   FUNGSI ZOOM POPUP KATALOG
+   ========================================= */
+      .katalog-modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(15, 23, 42, 0.7); /* Efek gelap */
+        backdrop-filter: blur(8px); /* Efek blur estetik */
+        z-index: 999999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+      }
+
+      /* Aktif saat modal dibuka */
+      .katalog-modal-overlay.aktif {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .katalog-modal-content {
+        background: white;
+        padding: 24px;
+        border-radius: 24px;
+        position: relative;
+        max-width: 90%;
+        width: 450px; /* Ukuran popup gambar katalog sedikit lebih besar dari QRIS */
+        text-align: center;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        transform: scale(0.8);
+        transition: transform 0.3s ease;
+      }
+
+      .katalog-modal-overlay.aktif .katalog-modal-content {
+        transform: scale(1);
+      }
+
+      .katalog-modal-content img {
+        width: 100%;
+        max-height: 70vh; /* Agar gambar panjang tidak melebihi tinggi layar ponsel */
+        object-fit: contain;
+        border-radius: 16px;
+      }
+
+      .katalog-modal-close {
+        position: absolute;
+        top: -15px;
+        right: -15px;
+        background: #ff5e7e;
+        color: white;
+        border: none;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        font-size: 22px;
+        line-height: 36px;
+        cursor: pointer;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bg-blur blur1"></div>
+    <div class="bg-blur blur2"></div>
+    <div class="scroll-progress"></div>
+
+    <header class="main-header header-scroll">
+      <div class="container header-wrapper">
+        <div class="brand">
+          <img src="katalog/logo.png" class="brand-logo" />
+          <div>
+            <h1>ITSGOLSHOP</h1>
+            <p>Custom Binder Divider Premium</p>
+          </div>
+        </div>
+        <nav class="desktop-nav">
+          <a href="index.html#home">Beranda</a>
+          <a href="index.html#benefit">Keunggulan</a>
+          <a href="#" class="active" style="color: #25d366">Katalog</a>
+          <a href="index.html#faq">FAQ</a>
+          <a href="index.html#order" class="nav-btn">Order</a>
+        </nav>
+      </div>
+    </header>
+
+    <section style="padding-top: 150px">
+      <div class="container">
+        <a href="index.html" class="back-to-home">
+          <i class="fa-solid fa-arrow-left"></i> Kembali ke Beranda
+        </a>
+
+        <div
+          class="section-title"
+          style="text-align: left; margin-bottom: 40px"
+        >
+          <span>KOLEKSI LENGKAP</span>
+          <h2>Semua Daftar Katalog Kami</h2>
+          <p style="color: #64748b; margin-top: 10px">
+            Temukan inspirasi desain pembatas bindermu di sini. Anda juga bisa
+            request menggunakan gambar sendiri!
+          </p>
+        </div>
+
+        <!-- Grid Konten Semua Katalog -->
+        <div class="catalog-page-grid">
+          <div class="catalog-item-card">
+            <img
+              src="katalog/12.png"
+              alt="Design Aesthetic 12"
+              onclick="bukaZoomKatalog(this)"
+              style="cursor: zoom-in"
+            />
+            <div class="catalog-info"><h4>Design Aesthetic 12</h4></div>
+          </div>
+          <div class="catalog-item-card">
+            <img
+              src="katalog/4.png"
+              alt="Design Minimalist 4"
+              onclick="bukaZoomKatalog(this)"
+              style="cursor: zoom-in"
+            />
+            <div class="catalog-info"><h4>Design Minimalist 4</h4></div>
+          </div>
+          <div class="catalog-item-card">
+            <img
+              src="katalog/5.png"
+              alt="Design Pastel 5"
+              onclick="bukaZoomKatalog(this)"
+              style="cursor: zoom-in"
+            />
+            <div class="catalog-info"><h4>Design Pastel 5</h4></div>
+          </div>
+          <div class="catalog-item-card">
+            <img
+              src="katalog/21.png"
+              alt="Design Retro 21"
+              onclick="bukaZoomKatalog(this)"
+              style="cursor: zoom-in"
+            />
+            <div class="catalog-info"><h4>Design Retro 21</h4></div>
+          </div>
+        </div>
+
+        <div
+          id="katalog-modal"
+          class="katalog-modal-overlay"
+          onclick="tutupZoomKatalog()"
+        >
+          <div class="katalog-modal-content" onclick="event.stopPropagation()">
+            <button
+              type="button"
+              class="katalog-modal-close"
+              onclick="tutupZoomKatalog()"
+            >
+              &times;
+            </button>
+            <img id="img-katalog-zoom" src="" alt="Katalog Besar" />
+            <p
+              id="caption-katalog-zoom"
+              style="
+                margin-top: 15px;
+                font-weight: 600;
+                font-size: 16px;
+                color: #0f172a;
+              "
+            ></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>© 2026 ITSGOLSHOP — Custom Binder Divider Indonesia</footer>
+
+    <script>
+      // Logika sederhana untuk progress bar di halaman katalog
+      const progress = document.querySelector(".scroll-progress");
+      window.addEventListener("scroll", () => {
+        const totalHeight =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+        const progressHeight = (window.pageYOffset / totalHeight) * 100;
+        progress.style.width = progressHeight + "%";
+      });
+
+      /* =========================================
+   FUNGSI ZOOM POPUP KATALOG
+   ========================================= */
+
+      function bukaZoomKatalog(element) {
+        const modal = document.getElementById("katalog-modal");
+        const imgZoom = document.getElementById("img-katalog-zoom");
+        const captionZoom = document.getElementById("caption-katalog-zoom");
+
+        // Ambil data dari gambar yang di-klik
+        imgZoom.src = element.src;
+        captionZoom.innerText = element.alt;
+
+        // Tampilkan modal popup
+        modal.classList.add("aktif");
+        // Kunci scroll halaman utama agar user fokus melihat gambar
+        document.body.style.overflow = "hidden";
+      }
+
+      function tutupZoomKatalog() {
+        const modal = document.getElementById("katalog-modal");
+
+        // Sembunyikan modal popup
+        modal.classList.remove("aktif");
+        // Kembalikan kemampuan scroll halaman semula
+        document.body.style.overflow = "auto";
+      }
+    </script>
+  </body>
+</html>
