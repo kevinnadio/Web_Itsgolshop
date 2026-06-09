@@ -1,0 +1,1181 @@
+/* =========================================
+RESET
+========================================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  background: #f8fafc;
+  overflow-x: hidden;
+  color: #0f172a;
+  position: relative;
+}
+
+/* =========================================
+GLOBAL
+========================================= */
+
+.container {
+  width: min(1180px, 92%);
+  margin: auto;
+}
+
+section {
+  padding: clamp(60px, 8vw, 110px) 0; /* FLUID: Padding vertikal otomatis menyesuaikan layar */
+  position: relative;
+}
+
+img {
+  max-width: 100%; /* FLUID: Mencegah gambar meluap melebihi container */
+  height: auto; /* FLUID: Proporsi gambar tetap terjaga */
+  display: block;
+}
+
+a {
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+}
+
+/* =========================================
+BACKGROUND
+========================================= */
+
+.bg-blur {
+  position: fixed;
+  border-radius: 50%; /* Mengganti 999px dengan 50% untuk efisiensi */
+  filter: blur(
+    max(40px, 6vw)
+  ); /* FLUID: Blur mengecil di layar kecil agar tidak berat */
+  z-index: -2;
+  opacity: 0.35;
+}
+
+.blur1 {
+  width: min(
+    420px,
+    80vw
+  ); /* FLUID: Mengikuti lebar layar jika layar di bawah 420px */
+  height: min(420px, 80vw); /* FLUID: Menjaga rasio lingkaran tetap 1:1 */
+  background: #25d366;
+  top: -10%;
+  left: -10%;
+}
+
+.blur2 {
+  width: min(350px, 70vw); /* FLUID */
+  height: min(350px, 70vw); /* FLUID */
+  background: #7dd3fc;
+  right: -10%;
+  bottom: -10%;
+}
+
+/* =========================================
+HEADER
+========================================= */
+
+.main-header {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 9999;
+  transition: 0.4s;
+}
+
+.header-scroll {
+  backdrop-filter: blur(18px);
+  background: rgba(255, 255, 255, 0.75);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+}
+
+.header-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.125rem 0; /* FLUID: Menggunakan rem */
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.brand-logo {
+  width: clamp(45px, 5vw, 58px); /* FLUID: Mengecil harmonis di HP */
+  height: clamp(45px, 5vw, 58px); /* FLUID */
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 15px 30px rgba(37, 211, 102, 0.15);
+}
+
+.brand h1 {
+  font-size: clamp(18px, 2vw, 22px); /* FLUID */
+  font-weight: 800;
+  color: #1b4332;
+}
+
+.brand p {
+  font-size: 13px;
+  color: #64748b;
+}
+
+.desktop-nav {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+}
+
+.desktop-nav a {
+  color: #334155;
+  font-weight: 600;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+.desktop-nav a:hover {
+  color: #25d366;
+}
+
+.nav-btn {
+  background: linear-gradient(135deg, #25d366, #1faa52);
+  color: white !important;
+  padding: 12px 24px;
+  border-radius: 999px;
+  box-shadow: 0 15px 30px rgba(37, 211, 102, 0.25);
+}
+
+/* =========================================
+HAMBURGER MENU & MOBILE RESPONSIVE
+========================================= */
+
+.menu-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 30px;
+  height: 21px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 10000;
+}
+
+.menu-toggle span {
+  display: block;
+  width: 100%;
+  height: 3px;
+  background-color: #1b4332;
+  border-radius: 3px;
+  transition: all 0.3s ease-in-out;
+}
+
+.menu-toggle.aktif span:nth-child(1) {
+  transform: translateY(9px) rotate(45deg);
+  background-color: #ff5e7e;
+}
+
+.menu-toggle.aktif span:nth-child(2) {
+  opacity: 0;
+}
+
+.menu-toggle.aktif span:nth-child(3) {
+  transform: translateY(-9px) rotate(-45deg);
+  background-color: #ff5e7e;
+}
+
+/* =========================================
+FLOATING BUTTON
+========================================= */
+
+.floating-order {
+  position: fixed; /* Diubah ke fixed agar benar-benar melayang di layar */
+  bottom: 20px;
+  right: 20px;
+  z-index: 999;
+  background: linear-gradient(135deg, #25d366, #1faa52);
+  color: white;
+  padding: 14px 24px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 14px;
+  box-shadow: 0 15px 35px rgba(37, 211, 102, 0.35);
+  transition: 0.4s;
+  opacity: 0;
+  transform: translateY(80px);
+}
+
+.show-float {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* =========================================
+HERO
+========================================= */
+
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4vw; /* FLUID: Menggunakan jarak berdasar lebar viewport */
+  align-items: center;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(37, 211, 102, 0.1);
+  color: #1faa52;
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+
+.hero-content h1 {
+  font-size: clamp(
+    36px,
+    5vw,
+    68px
+  ); /* FLUID: Teks otomatis membesar-mengecil proporsional */
+  line-height: 1.1;
+  font-weight: 800;
+  margin-bottom: 24px;
+}
+
+.hero-content h1 span {
+  color: #25d366;
+}
+
+.hero-desc {
+  color: #64748b;
+  line-height: 1.8;
+  font-size: clamp(15px, 1.5vw, 17px); /* FLUID */
+  margin-bottom: 30px;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #25d366, #1faa52);
+  color: white;
+  padding: 16px 32px;
+  border-radius: 999px;
+  font-weight: 700;
+  box-shadow: 0 18px 40px rgba(37, 211, 102, 0.3);
+  transition: 0.3s;
+}
+
+.btn-primary:hover {
+  transform: translateY(-5px);
+}
+
+.btn-secondary {
+  background: white;
+  border: 1px solid #e2e8f0;
+  color: #0f172a;
+  padding: 16px 32px;
+  border-radius: 999px;
+  font-weight: 700;
+}
+
+.hero-rating {
+  color: #64748b;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.hero-image-wrap {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+}
+
+.hero-card {
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(18px);
+  border-radius: 32px;
+  padding: 3%; /* FLUID */
+  box-shadow: 0 30px 60px rgba(15, 23, 42, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  transition: 0.2s;
+}
+
+.hero-img {
+  width: 100%;
+  height: auto;
+  max-height: min(
+    620px,
+    70vh
+  ); /* FLUID: Tinggi gambar tidak akan memotong batas atas-bawah device */
+  object-fit: cover;
+  border-radius: 24px;
+}
+
+.floating {
+  animation: floating 4s infinite ease-in-out;
+}
+
+@keyframes floating {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+.mini-card {
+  position: absolute;
+  background: white;
+  padding: 10px 16px;
+  border-radius: 14px;
+  font-size: 12px;
+  font-weight: 700;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.06);
+}
+
+.card1 {
+  top: 5%;
+  left: -5%;
+}
+.card2 {
+  top: 35%;
+  right: -5%;
+}
+.card3 {
+  bottom: 8%;
+  left: 5%;
+}
+
+/* =========================================
+STATS & BENEFIT
+========================================= */
+
+.stats {
+  padding-top: 0;
+}
+
+.stats-grid,
+.benefit-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.stats-card,
+.benefit-card {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(18px);
+  border-radius: 24px;
+  padding: 2.5rem 1.5rem; /* FLUID padding */
+  text-align: center;
+  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.05);
+  transition: 0.35s;
+}
+
+.benefit-card:hover {
+  transform: translateY(-10px);
+}
+
+.stats-card h2 {
+  font-size: clamp(28px, 4vw, 42px); /* FLUID */
+  color: #25d366;
+  margin-bottom: 12px;
+}
+
+.stats-card p {
+  color: #64748b;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.benefit-icon {
+  width: clamp(55px, 7vw, 76px); /* FLUID */
+  height: clamp(55px, 7vw, 76px); /* FLUID */
+  background: rgba(37, 211, 102, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  font-size: clamp(22px, 3vw, 32px); /* FLUID */
+  margin: 0 auto 24px auto;
+  color: #25d366;
+  transition: all 0.3s ease;
+}
+
+.benefit-card:hover .benefit-icon {
+  background: #25d366;
+  color: #ffffff;
+}
+
+.benefit-card h3 {
+  font-size: clamp(16px, 2vw, 22px); /* FLUID */
+  margin-bottom: 14px;
+  color: #0f172a;
+}
+
+.benefit-card p {
+  color: #64748b;
+  line-height: 1.7;
+  font-size: 14px;
+}
+
+/* =========================================
+SECTION TITLE
+========================================= */
+
+.section-title {
+  text-align: center;
+  margin-bottom: clamp(40px, 6vw, 70px);
+}
+
+.section-title span {
+  display: inline-block;
+  background: rgba(37, 211, 102, 0.1);
+  color: #1faa52;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.section-title h2 {
+  font-size: clamp(26px, 4vw, 48px); /* FLUID */
+  line-height: 1.2;
+}
+
+/* =========================================
+BENEFIT SECTION (DAPAT DIHAPUS JIKA DUPLIKAT, NAMUN TETAP DISINKRONKAN)
+========================================= */
+.benefit-section {
+  padding: clamp(40px, 6vw, 80px) 0;
+  background-color: #ffffff;
+}
+
+.benefit-section .section-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.benefit-section .section-header h2 {
+  font-size: clamp(24px, 3vw, 32px);
+  color: #0f172a;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.benefit-section .section-header p {
+  color: #64748b;
+  font-size: 15px;
+  max-width: 600px;
+  margin: 0 auto;
+  width: 90%;
+}
+
+/* =========================================
+CATALOG
+========================================= */
+
+.catalog-scroll {
+  overflow: hidden;
+  border-radius: 30px;
+  width: 100%;
+}
+
+.catalog-track {
+  display: flex;
+  gap: 20px;
+  width: max-content;
+  animation: scroll 30s linear infinite;
+}
+
+.catalog-track img {
+  width: clamp(
+    180px,
+    25vw,
+    280px
+  ); /* FLUID: Mengecil otomatis di resolusi mobile kecil */
+  height: auto;
+  aspect-ratio: 280 / 360; /* FLUID: Mempertahankan perbandingan rasio box */
+  object-fit: cover;
+  border-radius: 24px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+}
+
+@keyframes scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* =========================================
+TESTIMONI
+========================================= */
+
+.testi-img-card {
+  background: white;
+  border-radius: 20px;
+  padding: 12px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.04);
+  border: 1px solid #ffe3e7;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.testi-img-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(255, 94, 126, 0.15);
+}
+
+.testi-img-card img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  object-fit: contain;
+  cursor: zoom-in;
+}
+
+.testi-track-large {
+  display: flex;
+  gap: 24px;
+  width: max-content;
+  animation: scrollTestiLarge 40s linear infinite;
+}
+
+.testi-track-large img {
+  width: min(
+    400px,
+    80vw
+  ); /* FLUID: Menjamin lebar ga melebihi layar di HP manapun */
+  height: auto;
+  aspect-ratio: 400 / 280;
+  object-fit: contain;
+  background: #ffffff;
+  padding: 12px;
+  border-radius: 24px;
+  border: 1px solid #ffe3e7;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.06);
+  cursor: zoom-in;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.testi-track-large img:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 30px 60px rgba(255, 94, 126, 0.12);
+}
+
+.testi-track-large:hover {
+  animation-play-state: paused;
+}
+
+@keyframes scrollTestiLarge {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* MODAL GLOBAL OVERLAY (SINKRONISASI) */
+.testi-modal-overlay,
+.qris-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(8px);
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  padding: 16px; /* Mencegah modal menempel di dinding layar HP */
+}
+
+.testi-modal-overlay.aktif,
+.qris-modal-overlay.aktif {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.testi-modal-content,
+.qris-modal-content {
+  background: white;
+  padding: clamp(16px, 4vw, 30px); /* FLUID padding */
+  border-radius: 20px;
+  position: relative;
+  width: 100%;
+  max-width: 450px; /* Batas lebar aman desktop */
+  text-align: center;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3);
+  transform: scale(0.8);
+  transition: transform 0.3s ease;
+}
+
+.qris-modal-content {
+  max-width: 360px;
+}
+
+.testi-modal-overlay.aktif .testi-modal-content,
+.qris-modal-overlay.aktif .qris-modal-content {
+  transform: scale(1);
+}
+
+.testi-modal-content img,
+.qris-modal-content img {
+  width: 100%;
+  max-height: 70vh; /* FLUID: Gambar ga bakal keluar layar HP */
+  object-fit: contain;
+  border-radius: 12px;
+}
+
+.testi-modal-close,
+.qris-modal-close {
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  background: #ff5e7e;
+  color: white;
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.testi-modal-close:hover,
+.qris-modal-close:hover {
+  transform: scale(1.1);
+}
+
+/* =========================================
+STEPS
+========================================= */
+
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.step-card {
+  background: white;
+  border-radius: 20px;
+  padding: 30px 20px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+}
+
+.step-number {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #25d366, #1faa52);
+  color: white;
+  font-weight: 800;
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px auto;
+}
+
+.step-card h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.step-card p {
+  color: #64748b;
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+/* =========================================
+CTA
+========================================= */
+
+.cta-box {
+  background: linear-gradient(135deg, #25d366, #1faa52);
+  border-radius: 40px;
+  padding: clamp(40px, 6vw, 70px) 5%; /* FLUID horizontal padding */
+  text-align: center;
+  color: white;
+  box-shadow: 0 35px 70px rgba(37, 211, 102, 0.25);
+}
+
+.cta-box h2 {
+  font-size: clamp(28px, 5vw, 54px); /* FLUID */
+  margin-bottom: 18px;
+}
+
+.cta-box p {
+  margin-bottom: 30px;
+  opacity: 0.92;
+  font-size: clamp(15px, 2vw, 18px); /* FLUID */
+}
+
+.cta-box .btn-primary {
+  background: white;
+  color: #25d366;
+}
+
+/* =========================================
+FAQ
+========================================= */
+
+.faq-wrap {
+  width: 100%;
+  max-width: 850px;
+  margin: auto;
+}
+
+.faq-item {
+  background: white;
+  border-radius: 18px;
+  overflow: hidden;
+  margin-bottom: 16px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.04);
+}
+
+.faq-question {
+  width: 100%;
+  border: none;
+  background: white;
+  padding: 20px 24px;
+  text-align: left;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: 0.4s;
+  padding: 0 24px;
+  color: #64748b;
+  line-height: 1.7;
+}
+
+.faq-item.active .faq-answer {
+  max-height: 300px;
+  padding-bottom: 20px;
+}
+
+/* =========================================
+ORDER SECTION (FORM)
+========================================= */
+.order-section {
+  padding: clamp(40px, 5vw, 60px) 16px;
+  background-color: #fff5f7;
+}
+
+.container-form {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  background: #ffffff;
+  padding: clamp(20px, 5vw, 40px); /* FLUID padding otomatis menyempit di HP */
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(255, 182, 193, 0.3);
+}
+
+.container-form h2 {
+  color: #ff5e7e;
+  text-align: center;
+  margin-bottom: 10px;
+  font-weight: 700;
+  font-size: clamp(22px, 3vw, 28px);
+}
+
+.container-form p {
+  text-align: center;
+  color: #666;
+  margin-bottom: 24px;
+  font-size: 14px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #444;
+  font-size: 14px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #ffe3e7;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 14px;
+  color: #333;
+  transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: #ff8fa3;
+  outline: none;
+  box-shadow: 0 0 8px rgba(255, 143, 163, 0.2);
+}
+
+.btn-submit {
+  width: 100%;
+  padding: 15px;
+  background: linear-gradient(135deg, #25d366, #128c7e);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4);
+}
+
+.payment-summary {
+  background: #fff0f3;
+  border: 2px dashed #ffb6c1;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 24px;
+}
+
+.payment-summary h4 {
+  color: #ff5e7e;
+  margin-bottom: 12px;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+.summary-divider {
+  border: 0;
+  border-top: 1px solid #ffe3e7;
+  margin: 10px 0;
+}
+
+.summary-item.total {
+  font-weight: 700;
+  color: #0f172a;
+  font-size: 16px;
+}
+
+.summary-item.total #view-total {
+  color: #1faa52;
+}
+
+.summary-note {
+  font-size: 11px !important;
+  color: #888 !important;
+  text-align: left !important;
+  margin-top: 10px !important;
+  font-style: italic;
+}
+
+/* =========================================
+FOOTER
+========================================= */
+
+footer {
+  padding: 30px 16px;
+  text-align: center;
+  color: #64748b;
+  font-size: 14px;
+}
+
+/* =========================================
+REVEAL & EFFECTS
+========================================= */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(
+    40px
+  ); /* Dikurangi dari 80px agar rendering mobile lebih halus */
+  transition: 0.8s ease-out;
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.cursor-glow {
+  position: fixed;
+  width: min(280px, 50vw);
+  height: min(280px, 50vw);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(37, 211, 102, 0.12),
+    transparent 70%
+  );
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+}
+
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 4px;
+  background: linear-gradient(90deg, #25d366, #00c2ff);
+  z-index: 99999;
+}
+
+/* =========================================
+RESPONSIVE CODE CLEANUP (MEDIA QUERIES)
+========================================= */
+
+@media (max-width: 1100px) {
+  .hero-grid,
+  .benefit-grid,
+  .stats-grid,
+  .steps-grid,
+  .testi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .desktop-nav {
+    display: none;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px;
+  }
+
+  .hero-grid,
+  .testi-grid,
+  .testi-img-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .stats-card {
+    padding: 20px 12px !important;
+  }
+
+  .hero {
+    padding-top: 100px;
+  }
+
+  .hero-content {
+    text-align: center;
+  }
+
+  .hero-buttons {
+    justify-content: center;
+  }
+
+  .hero-img {
+    max-height: 380px;
+  }
+
+  .mini-card {
+    display: none;
+  }
+
+  .catalog-track img {
+    width: 200px;
+  }
+
+  .floating-order {
+    left: 16px;
+    right: 16px;
+    text-align: center;
+  }
+
+  .steps-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px;
+  }
+
+  .step-card {
+    padding: 16px 12px;
+  }
+
+  /* Form Pemesanan khusus HP */
+  .form-row-mobile,
+  .form-action-mobile {
+    grid-template-columns: 1fr !important;
+  }
+  .form-action-mobile button {
+    width: 100% !important;
+  }
+
+  .menu-toggle {
+    display: flex;
+  }
+
+  .nav-menu {
+    position: fixed;
+    top: 75px;
+    right: -300px;
+    left: auto;
+    width: 240px;
+    height: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 998;
+  }
+
+  .nav-menu.aktif {
+    right: 16px;
+  }
+
+  .nav-menu a {
+    font-size: 15px !important;
+    font-weight: 500;
+    color: #334155;
+    width: 100%;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(15, 23, 42, 0.05);
+    transition: all 0.3s ease;
+  }
+
+  .nav-menu a:hover {
+    color: #25d366;
+    padding-left: 6px;
+  }
+
+  .nav-menu .nav-btn {
+    background: linear-gradient(135deg, #25d366, #1faa52);
+    color: white !important;
+    width: 100%;
+    text-align: center;
+    padding: 12px 0;
+    border-radius: 12px;
+    border-bottom: none;
+    box-shadow: 0 10px 20px rgba(37, 211, 102, 0.15);
+    margin-top: 6px;
+    font-weight: 600;
+  }
+}
+
+/* Penyesuaian Grid Benefit saat ukuran HP ekstrem (2 Kolom) */
+@media screen and (max-width: 576px) {
+  .benefit-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px;
+  }
+
+  .benefit-card {
+    padding: 16px 10px;
+    border-radius: 12px;
+  }
+
+  .benefit-card p {
+    font-size: 12px;
+    line-height: 1.4;
+  }
+}
+
+#tabel-pesanan th,
+#tabel-pesanan td {
+  border-bottom: 1px solid #ffe3e7;
+  padding: 8px 5px;
+}
+
+#tabel-pesanan tbody tr:nth-child(even) {
+  background-color: #fff9fa;
+}
+
+.item-katalog-pilih:hover {
+  transform: translateY(-3px);
+  border-color: #ff5e7e !important;
+  box-shadow: 0 8px 20px rgba(255, 94, 126, 0.15);
+}
+
+.item-katalog-pilih.terpilih-aktif {
+  border-color: #25d366 !important;
+  background-color: #e8fbf1;
+}
