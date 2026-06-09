@@ -1,0 +1,546 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Katalog Lengkap | ITSGOLSHOP</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+    <style>
+      /* CSS Tambahan Khusus Grid Katalog */
+      .catalog-page-grid {
+        display: grid;
+        /* Mengubah minmax dari 220px menjadi 170px agar kolom lebih padat karena teks sudah hilang */
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 28px; /* Jarak antar kotak sedikit dirapatkan */
+        margin-top: 40px;
+      }
+      .catalog-item-card {
+        background: white;
+        padding: 6px; /* Dikurangi dari 12px agar kotak lebih fit dengan gambar */
+        border-radius: 20px; /* Sedikit disesuaikan agar manis */
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.04);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border: 1px solid rgba(0, 0, 0, 0.03);
+        display: flex;
+        flex-direction: column;
+      }
+      .catalog-item-title {
+        font-size: 14px; /* Sedikit diperkecil agar pas dengan ukuran kotak baru */
+        color: #0f172a;
+        font-weight: 700;
+        margin: 6px 0 2px 0; /* Mengatur jarak text agar pas di tengah bawah gambar */
+        text-align: center;
+      }
+      .catalog-item-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(37, 211, 102, 0.15);
+      }
+      .catalog-item-card img {
+        width: 100%;
+        height: auto;
+        max-height: 380px;
+        object-fit: contain; /* Di desktop & tablet gambar tetap utuh (tidak terpotong) */
+        border-radius: 16px;
+        background-color: #f8fafc;
+      }
+      .catalog-info {
+        padding: 12px 6px 4px;
+        text-align: center;
+      }
+      .catalog-info h4 {
+        font-size: 15px;
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 4px;
+      }
+      .back-to-home {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: #25d366;
+        font-weight: 600;
+        margin-bottom: 20px;
+      }
+      /* Tambahan aturan khusus layar HP agar tetap rapi menjadi 2 kolom */
+      /* Aturan khusus layar HP/Mobile - KEMBALI KE SEMULA */
+      @media screen and (max-width: 576px) {
+        .catalog-page-grid {
+          grid-template-columns: repeat(
+            2,
+            1fr
+          ) !important; /* Tetap beralih ke 2 kolom */
+          gap: 12px;
+          margin-top: 20px;
+        }
+
+        .catalog-item-card img {
+          height: 250px !important; /* Mengembalikan tinggi kotak gambar semula di HP */
+          object-fit: cover !important; /* Mengembalikan efek cover (gambar penuh) semula di HP */
+          border-radius: 20px;
+        }
+      }
+      /* =========================================
+   FUNGSI ZOOM POPUP KATALOG
+   ========================================= */
+      .katalog-modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(15, 23, 42, 0.7); /* Efek gelap */
+        backdrop-filter: blur(8px); /* Efek blur estetik */
+        z-index: 999999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+      }
+
+      /* Aktif saat modal dibuka */
+      .katalog-modal-overlay.aktif {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .katalog-modal-content {
+        background: white;
+        padding: 12px; /* Dikurangi dari 24px agar sisa ruang untuk gambar lebih besar */
+        border-radius: 20px;
+        position: relative;
+        max-width: 95%; /* Menaikkan batas lebar maksimal agar lebih penuh di layar */
+        width: 750px; /* Diperbesar dari 450px agar di desktop/tab terlihat sangat besar */
+        text-align: center;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3);
+        transform: scale(0.8);
+        transition: transform 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .katalog-modal-overlay.aktif .katalog-modal-content {
+        transform: scale(1);
+      }
+
+      .katalog-modal-content img {
+        width: 100%;
+        height: auto;
+        max-height: 82vh; /* Dipertinggi dari 70vh agar gambar memanjang ke bawah lebih maksimal */
+        object-fit: contain; /* Memastikan gambar tetap utuh/tidak terpotong meski berukuran besar */
+        border-radius: 12px;
+      }
+
+      .katalog-modal-close {
+        position: absolute;
+        top: 10px; /* Memasukkan tombol ke dalam area putih */
+        right: 10px; /* Memasukkan tombol ke dalam area putih */
+        background: rgba(255, 94, 126, 0.9);
+        color: white;
+        border: none;
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        font-size: 20px;
+        line-height: 34px;
+        cursor: pointer;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10; /* Memastikan tombol berada di atas gambar */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bg-blur blur1"></div>
+    <div class="bg-blur blur2"></div>
+    <div class="scroll-progress"></div>
+
+    <header class="main-header header-scroll">
+      <div class="container header-wrapper">
+        <div class="brand">
+          <img src="katalog/logo.png" class="brand-logo" />
+          <div>
+            <h1>ITSGOLSHOP</h1>
+            <p>Custom Binder Divider Premium</p>
+          </div>
+        </div>
+        <nav class="desktop-nav">
+          <a href="index.html#home">Beranda</a>
+          <a href="index.html#benefit">Keunggulan</a>
+          <a href="#" class="active" style="color: #25d366">Katalog</a>
+          <a href="index.html#faq">FAQ</a>
+          <a href="index.html#order" class="nav-btn">Order</a>
+        </nav>
+      </div>
+    </header>
+
+    <section style="padding-top: 150px">
+      <div class="container">
+        <a href="index.html" class="back-to-home">
+          <i class="fa-solid fa-arrow-left"></i> Kembali ke Beranda
+        </a>
+
+        <div
+          class="section-title"
+          style="text-align: left; margin-bottom: 40px"
+        >
+          <span>KOLEKSI LENGKAP</span>
+          <h2>Semua Daftar Katalog Kami</h2>
+          <p style="color: #64748b; margin-top: 10px">
+            Temukan inspirasi desain pembatas bindermu di sini. Anda juga bisa
+            request menggunakan gambar sendiri!
+          </p>
+        </div>
+
+        <!-- Grid Konten Semua Katalog -->
+        <div class="catalog-page-grid">
+          <div class="catalog-item-card">
+            <img
+              src="katalog/1.png"
+              onclick="bukaZoomKatalog(this)"
+              style="cursor: zoom-in"
+            />
+            <div class="catalog-info">
+              <h4>Katalog 01</h4>
+            </div>
+          </div>
+
+          <div class="catalog-item-card">
+            <img
+              src="katalog/2.png"
+              onclick="bukaZoomKatalog(this)"
+              style="cursor: zoom-in"
+            />
+            <div class="catalog-info">
+              <h4>Katalog 02</h4>
+            </div>
+          </div>
+
+          <div class="catalog-item-card">
+            <img
+              src="katalog/3.png"
+              onclick="bukaZoomKatalog(this)"
+              style="cursor: zoom-in"
+            />
+            <div class="catalog-info">
+              <h4>Katalog 03</h4>
+            </div>
+          </div>
+
+          <div class="catalog-item-card">
+            <img
+              src="katalog/4.png"
+              alt="Katalog 04 - Tema Pastel Pink Estetik"
+              onclick="bukaZoomKatalog(this)"
+              style="cursor: zoom-in"
+            />
+            <div class="catalog-info">
+              <h4>Katalog 04</h4>
+            </div>
+          </div>
+
+          <div class="catalog-item-card">
+            <img
+              src="katalog/5.png"
+              onclick="bukaZoomKatalog(this)"
+              style="cursor: zoom-in"
+            />
+            <div class="catalog-info">
+              <h4>Katalog 05</h4>
+            </div>
+          </div>
+
+          <div class="catalog-item-card">
+            <img
+              src="katalog/6.png"
+              onclick="bukaZoomKatalog(this)"
+              style="cursor: zoom-in"
+            />
+            <div class="catalog-info">
+              <h4>Katalog 06</h4>
+            </div>
+          </div>
+
+          <div class="catalog-item-card">
+            <img
+              src="katalog/7.png"
+              onclick="bukaZoomKatalog(this)"
+              style="cursor: zoom-in"
+            />
+            <div class="catalog-info">
+              <h4>Katalog 07</h4>
+            </div>
+          </div>
+
+          <div class="catalog-item-card">
+            <img
+              src="katalog/8.png"
+              onclick="bukaZoomKatalog(this)"
+              style="cursor: zoom-in"
+            />
+            <div class="catalog-info">
+              <h4>Katalog 08</h4>
+            </div>
+          </div>
+
+          <div class="catalog-item-card">
+            <img
+              src="katalog/9.png"
+              onclick="bukaZoomKatalog(this)"
+              style="cursor: zoom-in"
+            />
+            <div class="catalog-info">
+              <h4>Katalog 09</h4>
+            </div>
+          </div>
+
+          <div class="catalog-item-card">
+            <img
+              src="katalog/10.png"
+              onclick="bukaZoomKatalog(this)"
+              style="cursor: zoom-in"
+            />
+            <div class="catalog-info">
+              <h4>Katalog 10</h4>
+            </div>
+          </div>
+
+          <div class="catalog-item-card">
+            <img
+              src="katalog/11.png"
+              onclick="bukaZoomKatalog(this)"
+              style="cursor: zoom-in"
+            />
+            <div class="catalog-info">
+              <h4>Katalog 11</h4>
+            </div>
+          </div>
+
+          <div class="catalog-item-card">
+            <img
+              src="katalog/12.png"
+              onclick="bukaZoomKatalog(this)"
+              style="cursor: zoom-in"
+            />
+            <div class="catalog-info">
+              <h4>Katalog 12</h4>
+            </div>
+          </div>
+
+          <div class="catalog-item-card">
+            <img
+              src="katalog/13.png"
+              onclick="bukaZoomKatalog(this)"
+              style="cursor: zoom-in"
+            />
+            <div class="catalog-info">
+              <h4>Katalog 13</h4>
+            </div>
+          </div>
+
+          <div class="catalog-item-card">
+            <img
+              src="katalog/14.png"
+              onclick="bukaZoomKatalog(this)"
+              style="cursor: zoom-in"
+            />
+            <div class="catalog-info">
+              <h4>Katalog 14</h4>
+            </div>
+          </div>
+
+          <div class="catalog-item-card">
+            <img
+              src="katalog/15.png"
+              onclick="bukaZoomKatalog(this)"
+              style="cursor: zoom-in"
+            />
+            <div class="catalog-info">
+              <h4>Katalog 15</h4>
+            </div>
+          </div>
+
+          <div class="catalog-item-card">
+            <img
+              src="katalog/16.png"
+              onclick="bukaZoomKatalog(this)"
+              style="cursor: zoom-in"
+            />
+            <div class="catalog-info">
+              <h4>Katalog 16</h4>
+            </div>
+          </div>
+
+          <div class="catalog-item-card">
+            <img
+              src="katalog/17.png"
+              onclick="bukaZoomKatalog(this)"
+              style="cursor: zoom-in"
+            />
+            <div class="catalog-info">
+              <h4>Katalog 17</h4>
+            </div>
+          </div>
+
+          <div class="catalog-item-card">
+            <img
+              src="katalog/18.png"
+              onclick="bukaZoomKatalog(this)"
+              style="cursor: zoom-in"
+            />
+            <div class="catalog-info">
+              <h4>Katalog 18</h4>
+            </div>
+          </div>
+
+          <div class="catalog-item-card">
+            <img
+              src="katalog/19.png"
+              onclick="bukaZoomKatalog(this)"
+              style="cursor: zoom-in"
+            />
+            <div class="catalog-info">
+              <h4>Katalog 19</h4>
+            </div>
+          </div>
+
+          <div class="catalog-item-card">
+            <img
+              src="katalog/20.png"
+              onclick="bukaZoomKatalog(this)"
+              style="cursor: zoom-in"
+            />
+            <div class="catalog-info">
+              <h4>Katalog 20</h4>
+            </div>
+          </div>
+
+          <div class="catalog-item-card">
+            <img
+              src="katalog/21.png"
+              onclick="bukaZoomKatalog(this)"
+              style="cursor: zoom-in"
+            />
+            <div class="catalog-info">
+              <h4>Katalog 21</h4>
+            </div>
+          </div>
+
+          <div class="catalog-item-card">
+            <img
+              src="katalog/22.png"
+              onclick="bukaZoomKatalog(this)"
+              style="cursor: zoom-in"
+            />
+            <div class="catalog-info">
+              <h4>Katalog 22</h4>
+            </div>
+          </div>
+
+          <div class="catalog-item-card">
+            <img
+              src="katalog/23.png"
+              onclick="bukaZoomKatalog(this)"
+              style="cursor: zoom-in"
+            />
+            <div class="catalog-info">
+              <h4>Katalog 23</h4>
+            </div>
+          </div>
+
+          <div class="catalog-item-card">
+            <img
+              src="katalog/24.png"
+              onclick="bukaZoomKatalog(this)"
+              style="cursor: zoom-in"
+            />
+            <div class="catalog-info">
+              <h4>Katalog 24</h4>
+            </div>
+          </div>
+        </div>
+
+        <div
+          id="katalog-modal"
+          class="katalog-modal-overlay"
+          onclick="tutupZoomKatalog()"
+        >
+          <div class="katalog-modal-content" onclick="event.stopPropagation()">
+            <button
+              type="button"
+              class="katalog-modal-close"
+              onclick="tutupZoomKatalog()"
+            >
+              &times;
+            </button>
+            <img id="img-katalog-zoom" src="" alt="Katalog Besar" />
+            <p
+              id="caption-katalog-zoom"
+              style="
+                margin-top: 15px;
+                font-weight: 600;
+                font-size: 16px;
+                color: #0f172a;
+              "
+            ></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>© 2026 ITSGOLSHOP — Custom Binder Divider Indonesia</footer>
+
+    <script>
+      // Logika progress bar di halaman katalog
+      const progress = document.querySelector(".scroll-progress");
+      window.addEventListener("scroll", () => {
+        const totalHeight =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+        const progressHeight = (window.pageYOffset / totalHeight) * 100;
+        progress.style.width = progressHeight + "%";
+      });
+
+      /* =========================================
+     FUNGSI ZOOM POPUP KATALOG
+     ========================================= */
+      function bukaZoomKatalog(element) {
+        const modal = document.getElementById("katalog-modal");
+        const imgZoom = document.getElementById("img-katalog-zoom");
+        const captionZoom = document.getElementById("caption-katalog-zoom");
+
+        // Ambil data dari gambar yang di-klik
+        imgZoom.src = element.src;
+        captionZoom.innerText = element.alt;
+
+        // Tampilkan modal popup
+        modal.classList.add("aktif");
+        // Kunci scroll halaman utama agar user fokus melihat gambar
+        document.body.style.overflow = "hidden";
+      }
+
+      function tutupZoomKatalog() {
+        const modal = document.getElementById("katalog-modal");
+
+        // Sembunyikan modal popup
+        modal.classList.remove("aktif");
+        // Kembalikan kemampuan scroll halaman semula
+        document.body.style.overflow = "auto";
+      }
+    </script>
+  </body>
+</html>
