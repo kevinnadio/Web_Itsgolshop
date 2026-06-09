@@ -201,7 +201,7 @@ FLOATING BUTTON
 ========================================= */
 
 .floating-order {
-  position: fixed; /* Diubah ke fixed agar benar-benar melayang di layar */
+  position: relative; /* Diubah ke fixed agar benar-benar melayang di layar */
   bottom: 20px;
   right: 20px;
   z-index: 999;
